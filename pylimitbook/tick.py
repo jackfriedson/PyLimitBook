@@ -4,7 +4,7 @@ class Tick(object):
     def __init__(self, data):
         self.timestamp = int(data['timestamp'])
         self.qty = int(data['qty'])
-        self.price = convert_price(data['price'], False)
+        self.price = convert_price(data['price'], True)
         self.id_num = data['id_num']
 
 def convert_price(price, use_float):
