@@ -4,6 +4,7 @@ from bintrees import FastRBTree
 
 from pylimitbook.orderList import OrderList
 from pylimitbook.order import Order
+from pylimitbook.settings import PRICE_PRECISION
 
 class Tree(object):
     def __init__(self):
@@ -78,15 +79,20 @@ class Tree(object):
             self.volume += order.qty - original_volume
 
     def remove_order_by_id(self, id_num):
-        order = self.order_map[id_num]
-        self.volume -= order.qty
-        order.order_list.remove_order(order)
-        if len(order.order_list) == 0:
-            self.remove_price(order.price)
-        del self.order_map[id_num]
+        order = self.order_map.get(id_num)
+        if order:
+            self.volume -= order.qty
+            order.order_list.remove_order(order)
+            if len(order.order_list) == 0:
+                self.remove_price(order.price)
+            del self.order_map[id_num]
 
-    def max(self):
-        return self.max_price
+    def max(self, as_float=False):
+        if not as_float:
+            return self.max_price
+        return float(self.max_price) / float(10**PRICE_PRECISION)
 
-    def min(self):
-        return self.min_price
+    def min(self, as_float=False):
+        if not as_float:
+            return self.min_price
+        return float(self.min_price) / float(10**PRICE_PRECISION)

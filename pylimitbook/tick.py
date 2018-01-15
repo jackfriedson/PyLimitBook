@@ -1,11 +1,14 @@
 #!/usr/bin/python
 
+from pylimitbook.settings import PRICE_PRECISION
+
+
 class Tick(object):
     def __init__(self, data):
         self.timestamp = int(data['timestamp'])
-        self.qty = int(data['qty'])
-        self.price = convert_price(data['price'], True)
-        self.id_num = data['id_num']
+        self.qty = float(data['qty'])
+        self.price = convert_price(data['price'], False)
+        self.id_num = convert_price(data['id_num'], False)
 
 def convert_price(price, use_float):
     """
@@ -15,11 +18,11 @@ def convert_price(price, use_float):
     """
     if use_float:
         # Use floats to approximate prices instead of exact representation
-        return int(float(price) * float(10000))
+        return int(float(price) * float(10**PRICE_PRECISION))
     else:
         # Exact representation
         idx = price.index('.')
-        concat = "%s%s" % (price[0:idx], price[idx+1:].ljust(4,'0')[0:4])
+        concat = "%s%s" % (price[0:idx], price[idx+1:].ljust(PRICE_PRECISION,'0')[0:PRICE_PRECISION])
         return int(concat)
         #from decimal import Decimal
         #return int(Decimal(price) * Decimal(10000))

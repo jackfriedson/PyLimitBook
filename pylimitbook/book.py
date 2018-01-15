@@ -2,6 +2,7 @@
 
 from collections import deque
 
+from pylimitbook.settings import PRICE_PRECISION
 from pylimitbook.tick import Bid, Ask, Trade
 from pylimitbook.tree import Tree
 from builtins import input
@@ -134,7 +135,7 @@ class Book(object):
             for entry in self.trades:
                 if num < 5:
                     file_str.write(str(entry.qty) + " @ " \
-                                   + str(entry.price / 10000) \
+                                   + str(entry.price / 10**PRICE_PRECISION) \
                                    + " (" + str(entry.timestamp) + ")\n")
                     num += 1
                 else:

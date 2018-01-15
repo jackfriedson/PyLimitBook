@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 from pylimitbook.book import Book
+from pylimitbook.settings import PRICE_PRECISION
 from six.moves import cStringIO as StringIO
 
 class BookViewerBook(Book):
@@ -24,7 +25,7 @@ class BookViewerBook(Book):
             for k, v in self.bids.price_tree.items(reverse=True):
                 # aggregate
                 file_str.write("%s\t@\t%.4f\n" % \
-                               (v.volume, v.head_order.price / float(10000)))
+                               (v.volume, v.head_order.price / float(10**PRICE_PRECISION)))
         return file_str.getvalue()
 
     def ask_book_str(self):
@@ -44,7 +45,7 @@ class BookViewerBook(Book):
             for k, v in self.asks.price_tree.items():
                 # aggregate
                 file_str.write("%s\t@\t%.4f\n" % \
-                               (v.volume, v.head_order.price / float(10000)))
+                               (v.volume, v.head_order.price / float(10**PRICE_PRECISION)))
         return file_str.getvalue()
 
     def trade_book_str(self):
@@ -56,7 +57,7 @@ class BookViewerBook(Book):
             for entry in self.trades:
                 if num < 10:
                     file_str.write(str(entry.qty) + " @ " \
-                                   + '%f' % (entry.price / float(10000)) \
+                                   + '%f' % (entry.price / float(10**PRICE_PRECISION)) \
                                    + " (" + str(entry.timestamp) + ")\n")
                     num += 1
                 else:

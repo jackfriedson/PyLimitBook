@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+from pylimitbook.settings import PRICE_PRECISION
+
+
 class Order(object):
     def __init__(self, tick, order_list):
         self.next_order = None
@@ -38,4 +41,5 @@ class Order(object):
         return self.tick.is_bid
 
     def __str__(self):
-        return "%s\t@\t%.4f" % (self.qty, self.price / float(10000))
+        return "{}\t@\t{:.{price_precision}f}".format(self.qty, self.price / float(10**PRICE_PRECISION),
+                                                      price_precision=PRICE_PRECISION)
