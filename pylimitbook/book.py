@@ -118,21 +118,6 @@ class Book(object):
         self.trades.appendleft(trade)
         return trade
 
-    def average_price(self, side, volume):
-        volume_remaining = volume
-        cost_basis = 0.
-        book_side = self.bids.price_tree if side == 'bid' else self.asks.price_tree
-
-        for price, orders in book_side.items(side == 'bid'):
-            price = price / 10**PRICE_PRECISION
-            if orders.volume > volume_remaining:
-                cost_basis += price * volume_remaining
-                return cost_basis / volume, price
-            else:
-                cost_basis += price * orders.volume
-                volume_remaining -= orders.volume
-        return None
-
     def __str__(self):
         # Efficient string concat
         file_str = StringIO()
