@@ -87,12 +87,8 @@ class Tree(object):
                 self.remove_price(order.price)
             del self.order_map[id_num]
 
-    def max(self, as_float=False):
-        if not as_float or self.max_price is None:
-            return self.max_price
-        return float(self.max_price) / float(10**PRICE_PRECISION)
+    def max(self):
+        return self.max_price
 
-    def min(self, as_float=False):
-        if not as_float or self.min_price is None:
-            return self.min_price
-        return float(self.min_price) / float(10**PRICE_PRECISION)
+    def min(self):
+        return self.min_price
